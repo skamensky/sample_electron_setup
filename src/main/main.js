@@ -1,12 +1,13 @@
 const { app, BrowserWindow, Menu, globalShortcut } = require("electron");
 const electron = require("electron");
+const { template } = require("./menuTemplate");
 
 //this enables notifications as per https://www.electronjs.org/docs/tutorial/notifications
 app.setAppUserModelId(process.execPath);
 
 // Enable live reload for Electron
 require("electron-reload")(__dirname, {
-  electron: require(`${__dirname}/node_modules/electron`),
+  electron: require(`../../node_modules/electron`),
 });
 
 function createWindow() {
@@ -19,7 +20,6 @@ function createWindow() {
     }
   });
 
-  // Create the browser window.
   const win = new BrowserWindow({
     x: leftDisplay.workArea.x,
     y: leftDisplay.workArea.y,
@@ -29,8 +29,7 @@ function createWindow() {
     },
   });
 
-  // and load the index.html of the app.
-  win.loadFile("renderer/index.html");
+  win.loadFile("src/renderer/index.html");
 }
 
 // This method will be called when Electron has finished
@@ -50,45 +49,4 @@ app.whenReady().then(() => {
   });
 });
 
-const template = [
-  {
-    label: "File",
-
-    submenu: [{ role: "quit", accelerator: "CmdOrCtrl+Q" }],
-  },
-  // { role: 'editMenu' }
-  {
-    label: "Edit",
-    submenu: [
-      { role: "undo" },
-      { role: "redo" },
-      { type: "separator" },
-      { role: "cut" },
-      { role: "copy" },
-      { role: "paste" },
-      { role: "delete" },
-      { type: "separator" },
-      { role: "selectAll" },
-    ],
-  },
-  // { role: 'viewMenu' }
-  {
-    label: "View",
-    submenu: [
-      { role: "reload" },
-      { role: "toggledevtools", accelerator: "F12" },
-      { type: "separator" },
-      { role: "resetzoom" },
-      { role: "zoomin" },
-      { role: "zoomout" },
-      { type: "separator" },
-      { role: "togglefullscreen" },
-    ],
-  },
-  // { role: 'windowMenu' }
-  {
-    label: "Window",
-    submenu: [{ role: "minimize" }],
-  },
-];
 Menu.setApplicationMenu(Menu.buildFromTemplate(template));

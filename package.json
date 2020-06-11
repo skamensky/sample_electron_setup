@@ -1,8 +1,8 @@
 {
-  "name": "electrontest",
+  "name": "sample_electron_setup",
   "version": "1.0.0",
   "description": "testing electron",
-  "main": "main.js",
+  "main": "src/main/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
@@ -10,7 +10,7 @@
     "dist": "electron-builder"
   },
   "build": {
-    "appId": "electrontest",
+    "appId": "sample_electron_setup",
     "dmg": {
       "contents": [
         {

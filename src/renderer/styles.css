@@ -1,0 +1,22 @@
+@import "../../node_modules/toastify-js/src/toastify.css";
+
+
+#dragArea {
+    height: 200px;
+    text-align: center;
+    background-color: white;
+    outline: 2px dashed black;
+    outline-offset: -10px;
+    padding-top: 20px;
+    transition: outline-offset .5s;
+}
+
+#dragArea.initialLoad{
+    transition: none;
+}
+
+#dragArea.droppable{
+    background-color: #C6C6C6;
+    outline-offset: -20px;
+    transition: outline-offset .5s;
+}

@@ -1,5 +1,6 @@
 const Mousetrap = require("mousetrap");
 const Toastify = require("toastify-js");
+const { testInternetConnectivity } = require("./internetConnectivity");
 
 //render process keyboard shortcuts, local only to specific webview
 
