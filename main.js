@@ -1,52 +1,94 @@
-const { app, BrowserWindow,ipcMain } = require('electron')
+const { app, BrowserWindow, Menu, globalShortcut } = require("electron");
+const electron = require("electron");
 
+//this enables notifications as per https://www.electronjs.org/docs/tutorial/notifications
+app.setAppUserModelId(process.execPath);
 
 // Enable live reload for Electron
-require('electron-reload')(__dirname, {
-    // Note that the path to electron may vary according to the main file
-    electron: require(`${__dirname}/node_modules/electron`)
+require("electron-reload")(__dirname, {
+  electron: require(`${__dirname}/node_modules/electron`),
 });
 
-function createWindow () {
+function createWindow() {
+  let min = Number.MAX_VALUE;
+  let leftDisplay;
+  electron.screen.getAllDisplays().forEach((display) => {
+    if (display.workArea.x < min) {
+      leftDisplay = display;
+      min = display.workArea.x;
+    }
+  });
+
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    x: leftDisplay.workArea.x,
+    y: leftDisplay.workArea.y,
     webPreferences: {
-      nodeIntegration: true
-    }
-  })
+      nodeIntegration: true,
+      webviewTag: true,
+    },
+  });
 
   // and load the index.html of the app.
-  win.loadFile('index.html')
-  
+  win.loadFile("renderer/index.html");
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(createWindow)
+app.whenReady().then(createWindow);
 
-// Quit when all windows are closed.
-app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+//global shortcuts work even when the application isn't focused!
+app.whenReady().then(() => {
+  globalShortcut.register("Ctrl+1+2+3", () => {
+    console.log(
+      "Secret message received. Initiating self destruct in 5...4...3..2...1"
+    );
+    setTimeout(() => {
+      console.log("Just kidding");
+    }, 2000);
+  });
+});
 
-app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
-  }
-})
+const template = [
+  {
+    label: "File",
 
-ipcMain.on('ondragstart', (event, filePath) => {
-  event.sender.startDrag({
-    file: filePath,
-    icon: "C:\Users\ShmuelDev\Downloads\download.ico"
-  })
-})
+    submenu: [{ role: "quit", accelerator: "CmdOrCtrl+Q" }],
+  },
+  // { role: 'editMenu' }
+  {
+    label: "Edit",
+    submenu: [
+      { role: "undo" },
+      { role: "redo" },
+      { type: "separator" },
+      { role: "cut" },
+      { role: "copy" },
+      { role: "paste" },
+      { role: "delete" },
+      { type: "separator" },
+      { role: "selectAll" },
+    ],
+  },
+  // { role: 'viewMenu' }
+  {
+    label: "View",
+    submenu: [
+      { role: "reload" },
+      { role: "toggledevtools", accelerator: "F12" },
+      { type: "separator" },
+      { role: "resetzoom" },
+      { role: "zoomin" },
+      { role: "zoomout" },
+      { type: "separator" },
+      { role: "togglefullscreen" },
+    ],
+  },
+  // { role: 'windowMenu' }
+  {
+    label: "Window",
+    submenu: [{ role: "minimize" }],
+  },
+];
+Menu.setApplicationMenu(Menu.buildFromTemplate(template));
