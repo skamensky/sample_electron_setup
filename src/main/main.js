@@ -1,6 +1,14 @@
-const { app, BrowserWindow, Menu, globalShortcut } = require("electron");
+const {
+  ipcMain,
+  app,
+  BrowserWindow,
+  Menu,
+  globalShortcut,
+} = require("electron");
+
 const electron = require("electron");
 const { template } = require("./menuTemplate");
+const { folderSelectDialog, dragToOSHandler } = require("./fileHandler");
 
 //this enables notifications as per https://www.electronjs.org/docs/tutorial/notifications
 app.setAppUserModelId(process.execPath);
@@ -30,6 +38,10 @@ function createWindow() {
   });
 
   win.loadFile("src/renderer/index.html");
+
+  ipcMain.on("select-dirs", (event, arg) => {
+    folderSelectDialog(event, arg, win);
+  });
 }
 
 // This method will be called when Electron has finished
@@ -48,5 +60,7 @@ app.whenReady().then(() => {
     }, 2000);
   });
 });
+
+ipcMain.on("ondragstart", dragToOSHandler);
 
 Menu.setApplicationMenu(Menu.buildFromTemplate(template));

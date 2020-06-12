@@ -1,0 +1,6 @@
+TODO:
+    - Add tabs. Maybe look at how https://github.com/wexond/desktop does it?
+    - WIFI scanner/connecter
+DONE:
+    - Drag and drop from OS to electron
+    - Drag and drop from electron to OS

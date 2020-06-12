@@ -6,14 +6,20 @@
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="stylesheet" type="text/css" href="styles.css"/>
-  </head>
-  <body>
+
+    <body>
   <div id="dragArea" class="initialLoad">
     <span>Drag files here for processing</span>
   </div>
     <br>
     <br>
-    <button onclick="require('./internetConnectivity.js').testInternetConnectivity()">Test internet connectivity</button>
-    <script charset="utf-8" src="init.js" type="module"></script>
+  <button onclick="require('./internetConnectivity.js').testInternetConnectivity()">Test internet connectivity</button>
+
+  <button id="chooseFolder" onclick="(()=>{})()">Choose folder</button>
+  <div id="fileResults">
+
+  </div>
+
+  <script charset="utf-8" src="init.js" type="module"></script>
 </body>
 </html>

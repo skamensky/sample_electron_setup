@@ -6,6 +6,8 @@ const {
   handleDragover,
   handleDragEnter,
   handleDragLeave,
+  listFiles,
+  dragFilePathHandler,
 } = require("./fileHandler.js");
 
 initState();
@@ -25,5 +27,6 @@ document.addEventListener("drop", handleDropEvent);
 document.addEventListener("dragover", handleDragover);
 document.addEventListener("dragenter", handleDragEnter);
 document.addEventListener("dragleave", handleDragLeave);
+document.getElementById("chooseFolder").addEventListener("click", listFiles);
 
 bindKeyboardShortucts();
